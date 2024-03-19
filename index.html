@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Vite App</title>
+		<!--<link href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/default.min.css" rel="stylesheet"/>-->
+		<link href="style.scss" rel="stylesheet"/>
+		<script type="module" src="src/main.js"></script>
+	</head>
+	<body>
+	  <template id="spoiler">
+      <div id="summary">
+        <button id="toggle">Show</button>
+        <div id="content">
+          <slot name="summary"></slot>
+        </div>
+      </div>
+      <div id="content">
+        <div style="display: none;">
+          <slot/>
+        </div>
+      </div>
+	  </template>
+	</body>
+</html>

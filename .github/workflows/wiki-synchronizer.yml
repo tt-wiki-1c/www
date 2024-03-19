@@ -1,0 +1,31 @@
+name: Synchronize wiki pages
+on:
+  gollum:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@master
+      - name: Author config
+        run: |
+          git config user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          git config user.name "${{ github.actor }}"
+      - name: Switch branch to "wiki"
+        run: git fetch --all && git checkout wiki
+      - name: Replace folder /page
+        run: |
+          rm -r pages || echo
+          # git clone "${{ github.server_url }}/${{ github.repository }}.wiki.git" pages
+          gh repo clone ${{ github.repository }}.wiki pages
+          rm -r pages/.git
+      - run: npm start
+      - name: Commit and push
+        run: |
+          git add .
+          # git commit --amend --no-edit --allow-empty --allow-empty-message -C HEAD -m "Synchronize wiki pages"
+          git commit --amend --no-edit --allow-empty --allow-empty-message -C HEAD
+          git push --force
+          # gh workflow run gh-pages.yml
